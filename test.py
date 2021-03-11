@@ -1,6 +1,0 @@
-print("test")
-print("test2")
-print("test4")
-print("test5")
-print("test5")
-print("Tobiistdoof1")
