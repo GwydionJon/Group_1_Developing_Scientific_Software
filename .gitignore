@@ -138,7 +138,7 @@ dmypy.json
 cython_debug/
 
 # Output data
-Output/
+Output/**/*
 
 # VS config files
 .vscode/
