@@ -164,7 +164,6 @@ Task1/table_plot.pdf
 .vscode/
 
 # Sphinx
-
 conf.py
 index.rst
 make.bat
