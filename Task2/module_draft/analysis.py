@@ -28,13 +28,18 @@ class Analysis:
         """plots and saves the given data
 
         Args:
-            df ([pd.Dataframe]): [the Dataframe that is to be analyzed],
-            x_axis ([string]): [the column name for the x-axis]
+            df ([pd.Dataframe]): [the Dataframe that is to be analyzed] 
+            x_axis ([string]): [the column name for the x-axis]\ 
             y_axis ([string/list]): [the column name(s) for the y-axis]
             title ([string]): [title of the plot and the filename]
             xlabel (str, optional): [label for the x-axis]. Defaults to "".
             ylabel (str, optional): [label for the y-axis]. Defaults to "".
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
+
+            list_ref (integer list): A list with the indices of the reference vectors.
+            list_comp (integer list): A list with the indices of the vectors to\
+            compare to.
+            data (numpy array): The data object.
         """
 
         if(type(y_axis) != list):
@@ -73,8 +78,6 @@ class Numerical_Analysis(Analysis):
             [pd.Dataframe]: [with freq and intensity]
         """
         
-
-
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
         return pd.DataFrame([rfft_freq, rfft],columns=["freq", "intensitys" ])
