@@ -37,10 +37,6 @@ class Analysis:
             ylabel (str, optional): [label for the y-axis]. Defaults to "".
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
 
-            list_ref (integer list): A list with the indices of the reference vectors.
-            list_comp (integer list): A list with the indices of the vectors to\
-            compare to.
-            data (numpy array): The data object.
         """
 
         if(type(y_axis) != list):
