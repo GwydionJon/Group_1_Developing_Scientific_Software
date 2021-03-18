@@ -40,15 +40,20 @@ class Analysis:
 
 
 class Statistical_Analysis(Analysis):
-    """[summary]
+    """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
 
     Args:
-        Analysis ([type]): [description]
+        Analysis ([dataframe]): dataframe to be analysed    
     """
     def __init__(self, output_dir):
         Analysis.__init__(self, output_dir)
 
     def seaborn_plot(self, df):
+        """[Seaborn plot] plots dataframe with seaborn
+
+        Args:
+            df ([dataframe): dataframe which we want to plot
+        """
         df=df.drop(df.columns[df.var()<=self.threshold],axis=1)
         df.keys()
         g = sn.relplot(x="time", y="value", hue="variable", kind="line", data=pd.melt(df, ['time']))
@@ -56,7 +61,12 @@ class Statistical_Analysis(Analysis):
 
 
 
-    def correlation(self,df): 
+    def correlation(self,df):
+        """[Correlation] provides correlation matrix of the dataframe
+
+        Args:
+            df ([dataframe]): dataframe which we want to compute the correlation from
+        """
         corr_npop = df.corr()   
         corr_npop_np = corr_npop.to_numpy()
         corr_npop_np = np.triu(corr_npop_np, k=1)
@@ -70,6 +80,11 @@ class Statistical_Analysis(Analysis):
 
 
     def eucl_distance(self, df):
+        """[Euclidean Distance] computes euclidean distance of of the three components
+
+        Args:
+            df ([dataframe]): blabla
+        """
         #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
         table_np = np.nan_to_num(table_np)
