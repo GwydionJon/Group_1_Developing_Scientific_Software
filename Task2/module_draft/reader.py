@@ -10,8 +10,8 @@ import pandas as pd
 class FileReader:
 
     def __init__(self, dir_path):
-        """__init__ Method of FileReader class detects all files in folder 
-        and safes their paths and filenames as dict or does the same for just a 
+        """__init__ Method of FileReader class detects all files in folder
+        and safes their paths and filenames as dict or does the same for just a
         single file given.
 
         Args:
@@ -53,11 +53,11 @@ class FileReader:
         return df
 
     def read_pandas_c(self, file_path):
-        """Function to read text files to pandas DataFrame that are whitespace 
+        """Function to read text files to pandas DataFrame that are whitespace
         separated.
 
         Args:
-            file_path (str): filepath 
+            file_path (str): filepath
 
         Returns:
             DataFrame: DataFrame as read from file
