@@ -48,26 +48,24 @@ class Analysis:
             ylabel_list = ylabel
 
 
-        fig, axes = plt.subplots(nr_of_subplots, 1, figsize=(15, 10), sharex = True)
+        fig, axes = plt.subplots(nr_of_subplots, 1, figsize=(15, 10), sharex=True)
 
         for i in range(nr_of_subplots):
             axes[i].plot(df[x_axis].values, df[y_axis_list[i]].values)
             axes[i].set_ylabel(ylabel_list[i])
 
-        axes[-1].set_xlabel(xlabel, fontsize = 18)
+        axes[-1].set_xlabel(xlabel, fontsize=18)
         fig.savefig(self.output_dir + title + ".pdf")
         plt.show()
 
 
 class Numerical_Analysis(Analysis):
 
-        def fft_with_freq_analysis(self,df,column_name):
-            
+    def fft_with_freq_analysis(self, df, column_name, step_size):
 
-
-            
-
-
+        rfft = np.abs(np.fft.rfft(df[column_name].values))
+        rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
+        return rfft, rfft_freq
 
 
 
