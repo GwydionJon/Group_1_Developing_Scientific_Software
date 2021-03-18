@@ -77,7 +77,7 @@ class Numerical_Analysis(Analysis):
 
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        return pd.DataFrame([rfft_freq, rfft},columns=["freq", "intensitys" ])
+        return pd.DataFrame([rfft_freq, rfft],columns=["freq", "intensitys" ])
 
     def autocorrelation(self, df, time_label):
         """[calculates the autocorrolation function]
