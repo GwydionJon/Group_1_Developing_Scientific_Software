@@ -10,7 +10,8 @@ class Analysis:
         """[summary]
 
         Args:
-            output_dir ([string]): set the output dir for the analysis
+            threshold ([float]): [threshhold for the variance analysis]
+            output_dir ([string]): [name and location of output folder]
         """
         self.threshold = 1e-5
         self.output_dir = output_dir
@@ -27,20 +28,19 @@ class Analysis:
         """plots and saves the given data
 
         Args:
-            df ([pd.Dataframe]): the Dataframe that is to be analyzed
+            df ([pd.Dataframe]): [the Dataframe that is to be analyzed],
             x_axis ([string]): [the column name for the x-axis]
             y_axis ([string/list]): [the column name(s) for the y-axis]
-            title ([type]): [description]
-            xlabel (str, optional): [description]. Defaults to "".
-            ylabel (str, optional): [description]. Defaults to "".
-            nr_of_subplots (int, optional): [description]. Defaults to 1.
+            title ([string]): [title of the plot and the filename]
+            xlabel (str, optional): [label for the x-axis]. Defaults to "".
+            ylabel (str, optional): [label for the y-axis]. Defaults to "".
+            nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
         """
 
         if(type(y_axis) != list):
             y_axis_list = [y_axis]
         else:
             y_axis_list = y_axis
-
 
         if(type(ylabel) != list):
             ylabel_list = [ylabel]
@@ -62,10 +62,35 @@ class Analysis:
 class Numerical_Analysis(Analysis):
 
     def fft_with_freq_analysis(self, df, column_name, step_size):
+        """[calculates the fft and gives the frequencies in an pd.Dataframe]
+
+        Args:
+            df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+            column_name ([string]): [the column name for the fft]
+            step_size ([float]): [stepsize for the freq analysis]
+
+        Returns:
+            [pd.Dataframe]: [with freq and intensity]
+        """
+        
+
 
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        return rfft, rfft_freq
+        return pd.DataFrame([rfft_freq, rfft},columns=["freq", "intensitys" ])
 
+    def autocorrelation(self, df, time_label):
+        """[calculates the autocorrolation function]
 
+        Args:
+            df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+            time_label ([type]): [label name of the time column]
 
+        Returns:
+            [pd.Dataframe]: [time, autocorr]
+        """
+        imag_array = df.drop(time_label, axis=1).values
+        autocorr = np.zeros(len(imag_array), dtype=complex)
+        for t in range(len(imag_array)):
+            autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
+        return pd.DataFrame([df[time_label], autocorr], columns=["time", "autocorr"])
