@@ -8,6 +8,8 @@ import pandas as pd
 
 
 class FileReader:
+    """Class for reading the input files and returning them as pandas DataFrames
+    """
 
     def __init__(self, dir_path):
         """__init__ Method of FileReader class detects all files in folder
@@ -76,7 +78,7 @@ class FileReader:
             file_path = self.file_dict[fn]
             df = self.read_pandas_c(file_path)
 
-            fline = open("nstate_i.t").readline().rstrip()
+            fline = open(file_path).readline().rstrip()
             column = fline.split()
 
             if len(column) != df.shape[1]:
