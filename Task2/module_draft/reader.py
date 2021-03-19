@@ -91,11 +91,11 @@ class FileReader:
             file_path = self.file_dict[fn]
             df = self.read_pandas_c(file_path)
 
-            # extracts column names directly from file 
+            # extracts column names directly from file
             fline = open(file_path).readline().rstrip()
             column = fline.split("  ")
-            column = [ string for string in column if not string.isspace()]
-            column = [ string for string in column if string]
+            column = [string for string in column if not string.isspace()]
+            column = [string for string in column if string]
             # compares directly extracted column names to those
             # from pandas
             # if they do not match it will read in the file with numpy
