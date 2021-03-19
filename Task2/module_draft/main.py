@@ -40,8 +40,8 @@ def main():
     # add your own args = user_input() for testing and debugging so that you don't
     # have to call the script with full command line input
     
-    # args = user_input(['C:\\Users\\windo\\OneDrive\\Dokumente\\Uni\\Sustainable_development_course\\Group_1_Developing_Scientific_Software\\Input\\Task1', '-o',
-    # 'C:\\Users\\windo\\OneDrive\\Dokumente\\Uni\\Sustainable_development_course\\Group_1_Developing_Scientific_Software\\Output\\Task2'])
+    args = user_input(['C:\\Users\\windo\\OneDrive\\Dokumente\\Uni\\Sustainable_development_course\\Group_1_Developing_Scientific_Software\\Input\\Task1', '-o',
+    'C:\\Users\\windo\\OneDrive\\Dokumente\\Uni\\Sustainable_development_course\\Group_1_Developing_Scientific_Software\\Output\\Task2'])
 
     # read files
     reader = FileReader(args.path)
