@@ -49,14 +49,18 @@ class FileReader:
             DataFrame: DataFrame from file, dtype=complex and 'time' column
         """
         temp_np = np.loadtxt(file_path, skiprows=1)
+        # saves first columns as time seperatly
         time = temp_np[:, 0]
         temp_np = temp_np[:, 1:]
 
+        # creates new np.array with complex numbers
         imag_np = np.zeros(
             (temp_np.shape[0], int(temp_np.shape[1]/2)), dtype=complex)
         for i in range(imag_np.shape[1]):
             imag_np[:, i] = temp_np[:, 2*i]+1j*temp_np[:, 2*i+1]
 
+        # creates DataFrame from complex numpy array and adds
+        # the time column again
         df = pd.DataFrame(data=imag_np)
         df['time'] = time
 
@@ -83,12 +87,18 @@ class FileReader:
         self.df_dict = {}
 
         for fn in self.file_dict:
+            # reads file with standard routine
             file_path = self.file_dict[fn]
             df = self.read_pandas_c(file_path)
 
+            # extracts column names directly from file 
             fline = open(file_path).readline().rstrip()
             column = fline.split("  ")
 
+            # compares directly extracted column names to those
+            # from pandas
+            # if they do not match it will read in the file with numpy
+            # this should only happen for 'nstate_i.t'!
             if len(column) != df.shape[1]:
                 df = self.read_numpy(file_path)
 
