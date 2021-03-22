@@ -27,6 +27,8 @@ class Analysis:
         """
         df = df.drop(df.columns[df.var() <= self.threshold], axis=1)
 
+        return df
+
     def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="", nr_of_subplots=1):
         """plots and saves the given data
 
@@ -91,8 +93,11 @@ class Statistical_Analysis(Analysis):
         Args:
             df ([dataframe]): dataframe which we want to compute the correlation from
         """
+        df = Analysis.remove_low_variance(self, df)
         corr_npop = df.corr()
+
         corr_npop_np = corr_npop.to_numpy()
+
         corr_npop_np = np.triu(corr_npop_np, k=1)
         corr_npop_df = pd.DataFrame(data=corr_npop_np, index=['time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'], columns=[
                                     'time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'])
@@ -101,7 +106,7 @@ class Statistical_Analysis(Analysis):
         corr_npop_df = corr_npop_df[corr_npop_df['value'] != 0]
         corr_npop_df = corr_npop_df.sort_values(
             by='value', key=abs, ascending=False)
-        corr_npop_df
+
         corr_npop_df.to_csv(self.output_dir+'npop_out.csv')
 
     def eucl_distance(self, df):
