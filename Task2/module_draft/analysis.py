@@ -10,11 +10,11 @@ class Analysis:
     """
 
     def __init__(self, output_dir):
-        """[summary]
+        """Initilizes the class
 
         Args:
-            threshold ([float]): [threshhold for the variance analysis]
-            output_dir ([string]): [name and location of output folder]
+            threshold (float): threshhold for the variance analysis
+            output_dir (fstring): [name and location of output folder]
         """
         self.threshold = 1e-5
         self.output_dir = output_dir
@@ -33,12 +33,18 @@ class Analysis:
         """plots and saves the given data
 
         Args:
-            df ([pd.Dataframe]): [the Dataframe that is to be analyzed] 
-            x_axis ([string]): [the column name for the x-axis]\ 
-            y_axis ([string/list]): [the column name(s) for the y-axis]
+            df (pd.Dataframe): the Dataframe that is to be analyzed
+
+            x_axis (string): the column name for the x-axis
+
+            y_axis (string/list): the column name(s) for the y-axis
+
             title ([string]): [title of the plot and the filename]
+
             xlabel (str, optional): [label for the x-axis]. Defaults to "".
+
             ylabel (str, optional): [label for the y-axis]. Defaults to "".
+            
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
 
         """
