@@ -9,6 +9,7 @@ from reader import FileReader
 import analysis
 import numpy as np
 
+
 def user_input(sys_argv):
     """Function to parse command line arguments from user.
 
@@ -73,9 +74,10 @@ def main():
 
     df_autocorr_fft = num_ana.fft_with_freq_analysis(
         df_autocorr, "autocorr", type="complex")
-    
+
     # adding abs**2 to the dataframe
-    df_autocorr_fft["intensitys_squared"] = np.abs(df_autocorr_fft["intensitys"].values)**2
+    df_autocorr_fft["intensitys_squared"] = np.abs(
+        df_autocorr_fft["intensitys"].values)**2
     num_ana.plot_and_save(df_autocorr_fft, "freq", ["intensitys", "intensitys_squared"],
                           "nstate_autocorr_fft_analysis", xlabel="Freq",
                           show_graph=True, crop_edge=3)
