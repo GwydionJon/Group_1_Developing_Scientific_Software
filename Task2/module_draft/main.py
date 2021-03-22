@@ -7,7 +7,7 @@ import os
 import argparse
 from reader import FileReader
 import analysis
-
+import numpy as np
 
 def user_input(sys_argv):
     """Function to parse command line arguments from user.
@@ -69,7 +69,16 @@ def main():
     df_autocorr = num_ana.autocorrelation(input_df["nstate_i.t"], "time")
     num_ana.plot_and_save(df_autocorr, "time", ["autocorr_abs", "autocorr_real", "autocorr_imag"],
                           "nstate_autocorr_analysis", xlabel="time",
-                          show_graph=True)
+                          show_graph=False)
+
+    df_autocorr_fft = num_ana.fft_with_freq_analysis(
+        df_autocorr, "autocorr", type="complex")
+    
+    # adding abs**2 to the dataframe
+    df_autocorr_fft["intensitys_squared"] = np.abs(df_autocorr_fft["intensitys"].values)**2
+    num_ana.plot_and_save(df_autocorr_fft, "freq", ["intensitys", "intensitys_squared"],
+                          "nstate_autocorr_fft_analysis", xlabel="Freq",
+                          show_graph=True, crop_edge=3)
 
 
 if __name__ == "__main__":
