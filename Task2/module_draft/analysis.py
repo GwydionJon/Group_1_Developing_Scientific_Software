@@ -30,7 +30,7 @@ class Analysis:
         return df
 
     def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
-                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10]):
+                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10], crop_edge=0):
         """plots and saves the given data
 
         Args:
@@ -49,6 +49,14 @@ class Analysis:
             if no label is given the column name will be used. Defaults to "".
 
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
+
+            save_graph (bool, optional): whether or not the graph should be saved as a pdf. Defaults to true.
+
+            show_graph (bool, optional): whether or not the graph should be shown in a window. Defaults to true.
+
+            size (list(int), optional): total size of the plot. Defaults to [15,10].
+
+            crop_edge (int, optional): nr of cropped points at the edge of the graph. Defaults to 0.
 
         """
 
@@ -78,8 +86,13 @@ class Analysis:
             nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
 
         for i in range(nr_of_subplots):
-            axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
-                                                  ].values, label=ylabel_list[i])
+            if(crop_edge == 0):
+                axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
+                                                      ].values, label=ylabel_list[i])
+
+            else:
+                axes[i, 0].plot(df[x_axis].values[crop_edge:-crop_edge], df[y_axis_list[i]
+                                                                            ].values[crop_edge:-crop_edge], label=ylabel_list[i])
             axes[i, 0].set_ylabel(ylabel_list[i])
             axes[i, 0].legend()
 
@@ -158,7 +171,7 @@ class Statistical_Analysis(Analysis):
 
 class Numerical_Analysis(Analysis):
 
-    def fft_with_freq_analysis(self, df, column_name, step_size=0):
+    def fft_with_freq_analysis(self, df, column_name, step_size=0, type="real"):
         """[calculates the fft and gives the frequencies in an pd.Dataframe]
 
         Args:
@@ -169,12 +182,24 @@ class Numerical_Analysis(Analysis):
             step_size ([float]): stepsize for the freq analysis. 
             Will use differenz beween first two steps if to inout is given, default =0
 
+            type (string): choice between "real" and "complex", this will determine the type of fft,
+            default = "real"
+
+
+
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
         if(step_size == 0):
             step_size = df.iloc[1, 0]-df.iloc[0, 0]
-        rfft = np.abs(np.fft.rfft(df[column_name].values))
+
+        print(step_size)
+        if(type == "real"):
+            rfft = np.abs(np.fft.rfft(df[column_name].values))
+
+        if(type == "complex"):
+            rfft = np.fft.fft(df[column_name].values)
+
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
         return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
 
@@ -190,10 +215,9 @@ class Numerical_Analysis(Analysis):
             [pd.Dataframe]: [time, autocorr]
         """
         imag_array = df.drop(time_label, axis=1).values
-        print(imag_array.shape)
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame(list(zip(df[time_label].values, autocorr
+        return pd.DataFrame(list(zip(df[time_label].values, autocorr,
                                      np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
                             columns=["time", "autocorr", "autocorr_abs", "autocorr_real", "autocorr_imag"])
