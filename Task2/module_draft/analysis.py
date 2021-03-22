@@ -194,6 +194,6 @@ class Numerical_Analysis(Analysis):
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame(list(zip(df[time_label].values,
+        return pd.DataFrame(list(zip(df[time_label].values, autocorr
                                      np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
-                            columns=["time", "autocorr_abs", "autocorr_real", "autocorr_imag"])
+                            columns=["time", "autocorr", "autocorr_abs", "autocorr_real", "autocorr_imag"])
