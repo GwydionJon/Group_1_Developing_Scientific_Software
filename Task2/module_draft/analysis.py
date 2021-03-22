@@ -30,7 +30,7 @@ class Analysis:
         return df
 
     def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
-                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15,10]):
+                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10]):
         """plots and saves the given data
 
         Args:
@@ -62,13 +62,13 @@ class Analysis:
         #     ylabel_list = [ylabel]
         # else:
         #     ylabel_list = ylabel
-        
-        #use column names as labels if no other label is given
-        if(xlabel==""):
-            xlabel=x_axis
-        if(ylabel==""):
-            ylabel=y_axis
-       
+
+        # use column names as labels if no other label is given
+        if(xlabel == ""):
+            xlabel = x_axis
+        if(ylabel == ""):
+            ylabel = y_axis
+
         if(type(ylabel) != list):
             ylabel_list = [ylabel]
         else:
@@ -78,12 +78,13 @@ class Analysis:
             nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
 
         for i in range(nr_of_subplots):
-            axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]].values, label=ylabel_list[i])
+            axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
+                                                  ].values, label=ylabel_list[i])
             axes[i, 0].set_ylabel(ylabel_list[i])
             axes[i, 0].legend()
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
-        
+
         if(save_graph == True):
             fig.savefig(self.output_dir + title + ".pdf")
         if(show_graph == True):
