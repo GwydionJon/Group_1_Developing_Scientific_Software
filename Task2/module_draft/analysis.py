@@ -157,10 +157,8 @@ class Numerical_Analysis(Analysis):
         """
         if(step_size==0):
             step_size=df.iloc[1,0]-df.iloc[0,0]
-            print("step_size:", step_size)
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        print(rfft_freq)
         return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
