@@ -29,8 +29,8 @@ class Analysis:
 
         return df
 
-    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="", 
-        nr_of_subplots=1, save_graph=True, show_graph=True):
+    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
+                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15,10]):
         """plots and saves the given data
 
         Args:
@@ -42,10 +42,12 @@ class Analysis:
 
             title ([string]): [title of the plot and the filename]
 
-            xlabel (str, optional): [label for the x-axis]. Defaults to "".
+            xlabel (str, optional): Custom label for the x-axis, 
+            if no label is given the column name will be used. Defaults to "".
 
-            ylabel (str, optional): [label for the y-axis]. Defaults to "".
-            
+            ylabel (str, optional): Custom label for the y-axis, 
+            if no label is given the column name will be used. Defaults to "".
+
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
 
         """
@@ -53,24 +55,38 @@ class Analysis:
         if(type(y_axis) != list):
             y_axis_list = [y_axis]
         else:
+            nr_of_subplots = len(y_axis)
             y_axis_list = y_axis
 
+        # if(type(ylabel) != list):
+        #     ylabel_list = [ylabel]
+        # else:
+        #     ylabel_list = ylabel
+        
+        #use column names as labels if no other label is given
+        if(xlabel==""):
+            xlabel=x_axis
+        if(ylabel==""):
+            ylabel=y_axis
+       
         if(type(ylabel) != list):
             ylabel_list = [ylabel]
         else:
             ylabel_list = ylabel
 
         fig, axes = plt.subplots(
-            nr_of_subplots, 1, figsize=(15, 10), sharex=True, squeeze=False)
+            nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
 
         for i in range(nr_of_subplots):
-            axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]].values)
+            axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]].values, label=ylabel_list[i])
             axes[i, 0].set_ylabel(ylabel_list[i])
+            axes[i, 0].legend()
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
-        if(save_graph==True):
+        
+        if(save_graph == True):
             fig.savefig(self.output_dir + title + ".pdf")
-        if(show_graph==True):
+        if(show_graph == True):
             plt.show()
 
 
@@ -148,15 +164,15 @@ class Numerical_Analysis(Analysis):
             df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
 
             column_name ([string]): [the column name for the fft]
-            
+
             step_size ([float]): stepsize for the freq analysis. 
             Will use differenz beween first two steps if to inout is given, default =0
 
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
-        if(step_size==0):
-            step_size=df.iloc[1,0]-df.iloc[0,0]
+        if(step_size == 0):
+            step_size = df.iloc[1, 0]-df.iloc[0, 0]
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
         return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
@@ -177,4 +193,6 @@ class Numerical_Analysis(Analysis):
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame(list(zip(df[time_label].values, autocorr)), columns=["time", "autocorr"])
+        return pd.DataFrame(list(zip(df[time_label].values,
+                                     np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
+                            columns=["time", "autocorr_abs", "autocorr_real", "autocorr_imag"])
