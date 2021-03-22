@@ -29,7 +29,7 @@ class Analysis:
 
         return df
 
-    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="", nr_of_subplots=1):
+    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="", nr_of_subplots=1, show_graph=True):
         """plots and saves the given data
 
         Args:
@@ -68,7 +68,8 @@ class Analysis:
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
         fig.savefig(self.output_dir + title + ".pdf")
-        plt.show()
+        if(show_graph==True):
+            plt.show()
 
 
 class Statistical_Analysis(Analysis):
