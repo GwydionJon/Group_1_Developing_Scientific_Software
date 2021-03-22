@@ -141,7 +141,7 @@ class Statistical_Analysis(Analysis):
 
 class Numerical_Analysis(Analysis):
 
-    def fft_with_freq_analysis(self, df, column_name, step_size):
+    def fft_with_freq_analysis(self, df, column_name, step_size=0):
         """[calculates the fft and gives the frequencies in an pd.Dataframe]
 
         Args:
@@ -149,12 +149,14 @@ class Numerical_Analysis(Analysis):
 
             column_name ([string]): [the column name for the fft]
             
-            step_size ([float]): [stepsize for the freq analysis]
+            step_size ([float]): stepsize for the freq analysis. 
+            Will use differenz beween first two steps if to inout is given, default =0
 
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
-
+        if(step_size==0):
+            step_size=df[column_name][1]-df[column_name][0]
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
         return pd.DataFrame([rfft_freq, rfft], columns=["freq", "intensitys"])
