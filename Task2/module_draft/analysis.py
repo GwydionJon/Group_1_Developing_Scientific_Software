@@ -60,13 +60,13 @@ class Analysis:
             ylabel_list = ylabel
 
         fig, axes = plt.subplots(
-            nr_of_subplots, 1, figsize=(15, 10), sharex=True)
+            nr_of_subplots, 1, figsize=(15, 10), sharex=True, squeeze=False)
 
         for i in range(nr_of_subplots):
-            axes[i].plot(df[x_axis].values, df[y_axis_list[i]].values)
-            axes[i].set_ylabel(ylabel_list[i])
+            axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]].values)
+            axes[i, 0].set_ylabel(ylabel_list[i])
 
-        axes[-1].set_xlabel(xlabel, fontsize=18)
+        axes[-1, 0].set_xlabel(xlabel, fontsize=18)
         fig.savefig(self.output_dir + title + ".pdf")
         plt.show()
 
@@ -143,7 +143,9 @@ class Numerical_Analysis(Analysis):
 
         Args:
             df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+
             column_name ([string]): [the column name for the fft]
+            
             step_size ([float]): [stepsize for the freq analysis]
 
         Returns:
@@ -159,6 +161,7 @@ class Numerical_Analysis(Analysis):
 
         Args:
             df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+
             time_label ([type]): [label name of the time column]
 
         Returns:
