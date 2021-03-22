@@ -173,7 +173,8 @@ class Numerical_Analysis(Analysis):
             [pd.Dataframe]: [time, autocorr]
         """
         imag_array = df.drop(time_label, axis=1).values
+        print(imag_array.shape)
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame([df[time_label], autocorr], columns=["time", "autocorr"])
+        return pd.DataFrame(list(zip(df[time_label].values, autocorr)), columns=["time", "autocorr"])
