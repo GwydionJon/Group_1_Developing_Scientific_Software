@@ -29,8 +29,8 @@ class Analysis:
 
         return df
 
-    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="", 
-        nr_of_subplots=1, save_graph=True, show_graph=True):
+    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
+                      nr_of_subplots=1, save_graph=True, show_graph=True):
         """plots and saves the given data
 
         Args:
@@ -45,7 +45,7 @@ class Analysis:
             xlabel (str, optional): [label for the x-axis]. Defaults to "".
 
             ylabel (str, optional): [label for the y-axis]. Defaults to "".
-            
+
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
 
         """
@@ -68,9 +68,9 @@ class Analysis:
             axes[i, 0].set_ylabel(ylabel_list[i])
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
-        if(save_graph==True):
+        if(save_graph == True):
             fig.savefig(self.output_dir + title + ".pdf")
-        if(show_graph==True):
+        if(show_graph == True):
             plt.show()
 
 
@@ -148,15 +148,15 @@ class Numerical_Analysis(Analysis):
             df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
 
             column_name ([string]): [the column name for the fft]
-            
+
             step_size ([float]): stepsize for the freq analysis. 
             Will use differenz beween first two steps if to inout is given, default =0
 
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
-        if(step_size==0):
-            step_size=df.iloc[1,0]-df.iloc[0,0]
+        if(step_size == 0):
+            step_size = df.iloc[1, 0]-df.iloc[0, 0]
             print("step_size:", step_size)
         rfft = np.abs(np.fft.rfft(df[column_name].values))
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
