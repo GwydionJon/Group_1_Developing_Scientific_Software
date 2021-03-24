@@ -10,11 +10,11 @@ class Analysis:
     """
 
     def __init__(self, output_dir):
-        """[summary]
+        """Initilizes the class
 
         Args:
-            threshold ([float]): [threshhold for the variance analysis]
-            output_dir ([string]): [name and location of output folder]
+            threshold (float): threshhold for the variance analysis
+            output_dir (fstring): [name and location of output folder]
         """
         self.threshold = 1e-5
         self.output_dir = output_dir
@@ -29,24 +29,53 @@ class Analysis:
 
         return df
 
-    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="", nr_of_subplots=1):
+    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
+                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10], crop_edge=0):
         """plots and saves the given data
 
         Args:
-            df ([pd.Dataframe]): [the Dataframe that is to be analyzed] 
-            x_axis ([string]): [the column name for the x-axis]\ 
-            y_axis ([string/list]): [the column name(s) for the y-axis]
+            df (pd.Dataframe): the Dataframe that is to be analyzed
+
+            x_axis (string): the column name for the x-axis
+
+            y_axis (string/list): the column name(s) for the y-axis
+
             title ([string]): [title of the plot and the filename]
-            xlabel (str, optional): [label for the x-axis]. Defaults to "".
-            ylabel (str, optional): [label for the y-axis]. Defaults to "".
+
+            xlabel (str, optional): Custom label for the x-axis, 
+            if no label is given the column name will be used. Defaults to "".
+
+            ylabel (str, optional): Custom label for the y-axis, 
+            if no label is given the column name will be used. Defaults to "".
+
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
+
+            save_graph (bool, optional): whether or not the graph should be saved as a pdf. Defaults to true.
+
+            show_graph (bool, optional): whether or not the graph should be shown in a window. Defaults to true.
+
+            size (list(int), optional): total size of the plot. Defaults to [15,10].
+
+            crop_edge (int, optional): nr of cropped points at the edge of the graph. Defaults to 0.
 
         """
 
         if(type(y_axis) != list):
             y_axis_list = [y_axis]
         else:
+            nr_of_subplots = len(y_axis)
             y_axis_list = y_axis
+
+        # if(type(ylabel) != list):
+        #     ylabel_list = [ylabel]
+        # else:
+        #     ylabel_list = ylabel
+
+        # use column names as labels if no other label is given
+        if(xlabel == ""):
+            xlabel = x_axis
+        if(ylabel == ""):
+            ylabel = y_axis
 
         if(type(ylabel) != list):
             ylabel_list = [ylabel]
@@ -54,15 +83,25 @@ class Analysis:
             ylabel_list = ylabel
 
         fig, axes = plt.subplots(
-            nr_of_subplots, 1, figsize=(15, 10), sharex=True)
+            nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
 
         for i in range(nr_of_subplots):
-            axes[i].plot(df[x_axis].values, df[y_axis_list[i]].values)
-            axes[i].set_ylabel(ylabel_list[i])
+            if(crop_edge == 0):
+                axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
+                                                      ].values, label=ylabel_list[i])
 
-        axes[-1].set_xlabel(xlabel, fontsize=18)
-        fig.savefig(self.output_dir + title + ".pdf")
-        plt.show()
+            else:
+                axes[i, 0].plot(df[x_axis].values[crop_edge:-crop_edge], df[y_axis_list[i]
+                                                                            ].values[crop_edge:-crop_edge], label=ylabel_list[i])
+            axes[i, 0].set_ylabel(ylabel_list[i])
+            axes[i, 0].legend()
+
+        axes[-1, 0].set_xlabel(xlabel, fontsize=18)
+
+        if(save_graph == True):
+            fig.savefig(self.output_dir + title + ".pdf")
+        if(show_graph == True):
+            plt.show()
 
 
 class Statistical_Analysis(Analysis):
@@ -132,27 +171,44 @@ class Statistical_Analysis(Analysis):
 
 class Numerical_Analysis(Analysis):
 
-    def fft_with_freq_analysis(self, df, column_name, step_size):
+    def fft_with_freq_analysis(self, df, column_name, step_size=0, type="real"):
         """[calculates the fft and gives the frequencies in an pd.Dataframe]
 
         Args:
             df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+
             column_name ([string]): [the column name for the fft]
-            step_size ([float]): [stepsize for the freq analysis]
+
+            step_size ([float]): stepsize for the freq analysis. 
+            Will use differenz beween first two steps if to inout is given, default =0
+
+            type (string): choice between "real" and "complex", this will determine the type of fft,
+            default = "real"
+
+
 
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
+        if(step_size == 0):
+            step_size = df.iloc[1, 0]-df.iloc[0, 0]
 
-        rfft = np.abs(np.fft.rfft(df[column_name].values))
+        print(step_size)
+        if(type == "real"):
+            rfft = np.abs(np.fft.rfft(df[column_name].values))
+
+        if(type == "complex"):
+            rfft = np.fft.fft(df[column_name].values)
+
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        return pd.DataFrame([rfft_freq, rfft], columns=["freq", "intensitys"])
+        return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
         """[calculates the autocorrolation function]
 
         Args:
             df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+
             time_label ([type]): [label name of the time column]
 
         Returns:
@@ -162,4 +218,6 @@ class Numerical_Analysis(Analysis):
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame([df[time_label], autocorr], columns=["time", "autocorr"])
+        return pd.DataFrame(list(zip(df[time_label].values, autocorr,
+                                     np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
+                            columns=["time", "autocorr", "autocorr_abs", "autocorr_real", "autocorr_imag"])
