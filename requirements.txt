@@ -1,7 +1,3 @@
-sys
-os
-argparse
-analysis
 numpy
 pandas
 seaborn
