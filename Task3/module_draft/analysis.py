@@ -156,7 +156,7 @@ class Statistical_Analysis(Analysis):
         """[Euclidean Distance] computes euclidean distance of of the three components
 
         Args:
-            df ([dataframe]): blabla
+            df (dataframe): blabla
         """
         #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
@@ -176,23 +176,22 @@ class Statistical_Analysis(Analysis):
 class Numerical_Analysis(Analysis):
 
     def fft_with_freq_analysis(self, df, column_name, step_size=0, type="real"):
-        """[calculates the fft and gives the frequencies in an pd.Dataframe]
+        """Calculates the fft and gives the frequencies in an pd.Dataframe.
 
         Args:
-            df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+            df (pd.Dataframe): the Dataframe which includes the relevant data.
 
-            column_name ([string]): [the column name for the fft]
+            column_name (string): the column name for the fft.
 
-            step_size ([float]): stepsize for the freq analysis. 
-            Will use differenz beween first two steps if to inout is given, default =0
+            step_size (float): stepsize for the freq analysis.
+            Will use differenz beween first two steps if to inout is given, default =0.
 
             type (string): choice between "real" and "complex", this will determine the type of fft,
-            default = "real"
-
+            default = "real".
 
 
         Returns:
-            [pd.Dataframe]: [with freq and intensity]
+            pd.Dataframe: The columns are freq and intensity
         """
         if(step_size == 0):
             step_size = df.iloc[1, 0]-df.iloc[0, 0]
@@ -208,15 +207,15 @@ class Numerical_Analysis(Analysis):
         return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
-        """[calculates the autocorrolation function]
+        """Calculates the autocorrolation function of a given complex dataframe that includes a time axis.
 
         Args:
-            df ([pd.Dataframe]): [the Dataframe which includes the relevant data]
+            df (pd.Dataframe): The Dataframe which includes the relevant data.
 
-            time_label ([type]): [label name of the time column]
+            time_label (string): Label name of the time column.
 
         Returns:
-            [pd.Dataframe]: [time, autocorr]
+            pd.Dataframe: The columns are: time, autocorr, autocorr_abs, autocorr_real, autocorr_imag, where "autocorr" is the complete complex number and the others are the respective part of it.
         """
         imag_array = df.drop(time_label, axis=1).values
         autocorr = np.zeros(len(imag_array), dtype=complex)
