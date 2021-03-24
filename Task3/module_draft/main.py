@@ -1,4 +1,4 @@
-# Author: Tobias Kaczun
+# Author: Tobias Kaczun, Leonie Kreis, Gwydion Daskalakis
 # Date: 19.03.21
 # Package: DSS Analysis Package
 

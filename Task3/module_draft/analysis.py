@@ -1,3 +1,7 @@
+# Author: Leonie Kreis, Gwydion Daskalakis
+# Date: 18.03.21
+# Package: DSS analysis package
+
 import numpy as np
 import pandas as pd
 import seaborn as sn
