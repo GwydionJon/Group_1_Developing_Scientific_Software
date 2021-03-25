@@ -148,8 +148,8 @@ Output/**/*.png
 .vscode/
 
 # Sphinx
-conf.py
-index.rst
-make.bat
-Makefile
+#conf.py
+#index.rst
+#make.bat
+#Makefile
 _build/
