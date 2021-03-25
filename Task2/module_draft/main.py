@@ -49,9 +49,9 @@ def main():
     input_df = reader.read()
 
     # perform statistical analysis
-    # stat_ana = analysis.Statistical_Analysis(args.output)
-    # stat_ana.correlation(input_df['npop.t'])
-    # stat_ana.eucl_distance(input_df['table.dat'])
+    stat_ana = analysis.Statistical_Analysis(args.output)
+    stat_ana.correlation(input_df['npop.t'])
+    stat_ana.eucl_distance(input_df['table.dat'])
 
     # perfomr numerical analysis
     num_ana = analysis.Numerical_Analysis(args.output)
