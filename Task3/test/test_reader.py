@@ -1,13 +1,12 @@
 import pytest
-from reader import FileReader
+from module_draft import reader
+
+sub_dir = "sub_dir/"
+fns = ['file1.txt', 'file2.csv', 'file3.t', 'file4.dat']
 
 
 @pytest.fixture
-def create_temp_dir(tmp_path):
-    # filename and directory constants
-    sub_dir = "sub_dir/"
-    fns = ['file1.txt', 'file2.csv', 'file3.t', 'file4.dat']
-
+def create_temp_dir(tmp_path, sub_dir, fns):
     # make sub directory in tmp for files
     tmp_path.mkdir(sub_dir)
 
@@ -25,3 +24,4 @@ def create_temp_dir(tmp_path):
                              (),
                          ])
 def test_FileReader(dir_path, expected):
+    pass

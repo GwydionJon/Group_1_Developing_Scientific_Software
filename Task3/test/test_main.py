@@ -1,6 +1,6 @@
 import pytest
 import os
-import main
+from module_draft import main
 
 
 @pytest.mark.input
