@@ -55,10 +55,10 @@ class Analysis:
 
             title ([string]): [title of the plot and the filename]
 
-            xlabel (str, optional): Custom label for the x-axis, 
+            xlabel (str, optional): Custom label for the x-axis,
             if no label is given the column name will be used. Defaults to "".
 
-            ylabel (str, optional): Custom label for the y-axis, 
+            ylabel (str, optional): Custom label for the y-axis,
             if no label is given the column name will be used. Defaults to "".
 
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
@@ -127,7 +127,7 @@ class Statistical_Analysis(Analysis):
     """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
 
     Args:
-        Analysis ([dataframe]): dataframe to be analysed    
+        Analysis ([dataframe]): dataframe to be analysed
     """
     def __init__(self, output_dir):
         Analysis.__init__(self, output_dir)
@@ -251,6 +251,6 @@ class Numerical_Analysis(Analysis):
             zip(df[time_label].values, autocorr, np.abs(autocorr),
                 np.real(autocorr), np.imag(autocorr))),
                             columns=[
-                                    "time", "autocorr", "autocorr_abs",
-                                    "autocorr_real", "autocorr_imag"
+                                "time", "autocorr", "autocorr_abs",
+                                "autocorr_real", "autocorr_imag"
                             ])
