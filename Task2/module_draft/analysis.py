@@ -98,9 +98,9 @@ class Analysis:
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
 
-        if(save_graph == True):
+        if(save_graph):
             fig.savefig(self.output_dir + title + ".pdf")
-        if(show_graph == True):
+        if(show_graph):
             plt.show()
 
 
@@ -154,7 +154,7 @@ class Statistical_Analysis(Analysis):
         Args:
             df ([dataframe]): blabla
         """
-        #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
+        # table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
         table_np = np.nan_to_num(table_np)
         dist_2_3 = np.linalg.norm(table_np[:, 2] - table_np[:, 3])
