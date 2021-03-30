@@ -2,7 +2,7 @@
 # Date: 19.03.21
 # Package: DSS Analysis Package
 
-import sys
+# import sys unused
 import os
 import argparse
 from reader import FileReader
