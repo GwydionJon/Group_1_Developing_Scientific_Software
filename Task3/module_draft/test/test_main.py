@@ -34,7 +34,7 @@ def test_user_input(cmd_string, exp_args):
 
 
 @pytest.mark.input
-@pytest.mark.parametrize('cmd_string, exp_err', [('', )])
+@pytest.mark.parametrize('cmd_string, exp_err', [('', "")])
 def test_error_user_input(cmd_string, exp_err):
     """Fucntion to test correct Error Messages of user_input.
     Args:
