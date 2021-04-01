@@ -7,6 +7,7 @@ import pandas as pd
 
 
 def get_data_frame_fft_input():
+    print(pytest)
     np_array = np.ones(50)
     my_label = "test_set"
     df = pd.DataFrame(np_array, columns=[my_label])
