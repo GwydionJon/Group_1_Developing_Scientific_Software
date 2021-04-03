@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 
 
 class Analysis:
-    """[analysis] parent class for the analysis with variance filter and plot function
+    """[analysis] parent class for the analysis with variance filter and plot
+    function
 
     """
 
@@ -34,7 +35,8 @@ class Analysis:
         return df
 
     def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
-                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10], crop_edge=0):
+                      nr_of_subplots=1, save_graph=True, show_graph=True,
+                      size=[15, 10], crop_edge=0):
         """plots and saves the given data
 
         Args:
@@ -46,21 +48,25 @@ class Analysis:
 
             title ([string]): [title of the plot and the filename]
 
-            xlabel (str, optional): Custom label for the x-axis, 
+            xlabel (str, optional): Custom label for the x-axis,
             if no label is given the column name will be used. Defaults to "".
 
-            ylabel (str, optional): Custom label for the y-axis, 
+            ylabel (str, optional): Custom label for the y-axis,
             if no label is given the column name will be used. Defaults to "".
 
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
 
-            save_graph (bool, optional): whether or not the graph should be saved as a pdf. Defaults to true.
+            save_graph (bool, optional): whether or not the graph should be
+            saved as a pdf. Defaults to true.
 
-            show_graph (bool, optional): whether or not the graph should be shown in a window. Defaults to true.
+            show_graph (bool, optional): whether or not the graph should be
+            shown in a window. Defaults to true.
 
-            size (list(int), optional): total size of the plot. Defaults to [15,10].
+            size (list(int), optional): total size of the plot. Defaults to
+            [15,10].
 
-            crop_edge (int, optional): nr of cropped points at the edge of the graph. Defaults to 0.
+            crop_edge (int, optional): nr of cropped points at the edge of the
+            graph. Defaults to 0.
 
         """
 
@@ -87,32 +93,37 @@ class Analysis:
             ylabel_list = ylabel
 
         fig, axes = plt.subplots(
-            nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
+            nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True,
+            squeeze=False)
 
         for i in range(nr_of_subplots):
             if(crop_edge == 0):
-                axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
-                                                      ].values, label=ylabel_list[i])
+                axes[i, 0].plot(df[x_axis].values,
+                                df[y_axis_list[i]].values,
+                                label=ylabel_list[i])
 
             else:
-                axes[i, 0].plot(df[x_axis].values[crop_edge:-crop_edge], df[y_axis_list[i]
-                                                                            ].values[crop_edge:-crop_edge], label=ylabel_list[i])
+                axes[i, 0].plot(df[x_axis].values[crop_edge:-crop_edge],
+                                df[y_axis_list[i]].values[
+                                    crop_edge:-crop_edge],
+                                label=ylabel_list[i])
             axes[i, 0].set_ylabel(ylabel_list[i])
             axes[i, 0].legend()
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
 
-        if(save_graph == True):
+        if save_graph:
             fig.savefig(self.output_dir + title + ".pdf")
-        if(show_graph == True):
+        if show_graph:
             plt.show()
 
 
 class Statistical_Analysis(Analysis):
-    """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
+    """[Statistical Analysis] child class for statistical analysis, provides
+    seabornplot, correlation matrix and euclidean distance
 
     Args:
-        Analysis ([dataframe]): dataframe to be analysed    
+        Analysis ([dataframe]): dataframe to be analysed
     """
 
     def __init__(self, output_dir):
@@ -134,7 +145,8 @@ class Statistical_Analysis(Analysis):
         """[Correlation] provides correlation matrix of the dataframe
 
         Args:
-            df ([dataframe]): dataframe which we want to compute the correlation from
+            df ([dataframe]): dataframe which we want to compute the
+            correlation from
         """
         df = Analysis.remove_low_variance(self, df)
         corr_npop = df.corr()
@@ -142,8 +154,11 @@ class Statistical_Analysis(Analysis):
         corr_npop_np = corr_npop.to_numpy()
 
         corr_npop_np = np.triu(corr_npop_np, k=1)
-        corr_npop_df = pd.DataFrame(data=corr_npop_np, index=['time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'], columns=[
-                                    'time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'])
+        corr_npop_df = pd.DataFrame(data=corr_npop_np,
+                                    index=['time', 'MO3', 'MO4', 'MO6', 'MO11',
+                                           'MO12', 'MO14'],
+                                    columns=['time', 'MO3', 'MO4', 'MO6',
+                                             'MO11', 'MO12', 'MO14'])
         corr_npop_df = corr_npop_df.drop('time', axis=1)
         corr_npop_df = corr_npop_df.melt(ignore_index=False)
         corr_npop_df = corr_npop_df[corr_npop_df['value'] != 0]
@@ -153,12 +168,13 @@ class Statistical_Analysis(Analysis):
         corr_npop_df.to_csv(self.output_dir+'npop_out.csv')
 
     def eucl_distance(self, df):
-        """[Euclidean Distance] computes euclidean distance of of the three components
+        """[Euclidean Distance] computes euclidean distance of of the three
+        components
 
         Args:
             df (dataframe): blabla
         """
-        #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
+        # table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
         table_np = np.nan_to_num(table_np)
         dist_2_3 = np.linalg.norm(table_np[:, 2]-table_np[:, 3])
@@ -175,7 +191,8 @@ class Statistical_Analysis(Analysis):
 
 class Numerical_Analysis(Analysis):
 
-    def fft_with_freq_analysis(self, df, column_name, step_size=0, type="real"):
+    def fft_with_freq_analysis(self, df, column_name, step_size=0, 
+                               type="real"):
         """Calculates the fft and gives the frequencies in an pd.Dataframe.
 
         Args:
@@ -184,9 +201,11 @@ class Numerical_Analysis(Analysis):
             column_name (string): the column name for the fft.
 
             step_size (float): stepsize for the freq analysis.
-            Will use differenz beween first two steps if to inout is given, default =0.
+            Will use differenz beween first two steps if to inout is given,
+            default =0.
 
-            type (string): choice between "real" and "complex", this will determine the type of fft,
+            type (string): choice between "real" and "complex", this will
+            determine the type of fft,
             default = "real".
 
 
@@ -204,10 +223,12 @@ class Numerical_Analysis(Analysis):
             rfft = np.fft.fft(df[column_name].values)
 
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
+        return pd.DataFrame(list(zip(rfft_freq, rfft)),
+                            columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
-        """Calculates the autocorrolation function of a given complex dataframe that includes a time axis.
+        """Calculates the autocorrolation function of a given complex
+        dataframe that includes a time axis.
 
         Args:
             df (pd.Dataframe): The Dataframe which includes the relevant data.
@@ -215,12 +236,16 @@ class Numerical_Analysis(Analysis):
             time_label (string): Label name of the time column.
 
         Returns:
-            pd.Dataframe: The columns are: time, autocorr, autocorr_abs, autocorr_real, autocorr_imag, where "autocorr" is the complete complex number and the others are the respective part of it.
+            pd.Dataframe: The columns are: time, autocorr, autocorr_abs,
+             autocorr_real, autocorr_imag, where "autocorr" is the complete
+             complex number and the others are the respective part of it.
         """
         imag_array = df.drop(time_label, axis=1).values
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
         return pd.DataFrame(list(zip(df[time_label].values, autocorr,
-                                     np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
-                            columns=["time", "autocorr", "autocorr_abs", "autocorr_real", "autocorr_imag"])
+                                     np.abs(autocorr), np.real(autocorr),
+                                     np.imag(autocorr))),
+                            columns=["time", "autocorr", "autocorr_abs", 
+                                     "autocorr_real", "autocorr_imag"])
