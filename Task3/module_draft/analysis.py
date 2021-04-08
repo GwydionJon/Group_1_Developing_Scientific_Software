@@ -149,8 +149,7 @@ class Statistical_Analysis(Analysis):
         corr_npop_np = corr_npop.to_numpy()
 
         corr_npop_np = np.triu(corr_npop_np, k=1)
-        corr_npop_df = pd.DataFrame(data=corr_npop_np, index=['time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'], columns=[
-                                    'time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'])
+        corr_npop_df = pd.DataFrame(data=corr_npop_np, index=corr_npop.keys(), columns=corr_npop.keys())
         corr_npop_df = corr_npop_df.drop('time', axis=1)
         corr_npop_df = corr_npop_df.melt(ignore_index=False)
         corr_npop_df = corr_npop_df[corr_npop_df['value'] != 0]
@@ -167,7 +166,7 @@ class Statistical_Analysis(Analysis):
             df (dataframe): underlying dataframe from which we want to compute the distances
 
         Returns:
-            array consisting of the three distances in order of x,y,z. 
+            numpy array consisting of the three distances in order of x,y,z. 
             Further it saves the results in an txt file in the outputdirectory
         """
         #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
