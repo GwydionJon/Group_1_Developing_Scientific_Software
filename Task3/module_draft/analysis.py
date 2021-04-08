@@ -112,7 +112,7 @@ class Statistical_Analysis(Analysis):
     """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
 
     Args:
-        Analysis ([dataframe]): dataframe to be analysed    
+        Analysis ([dataframe]): dataframe to be analyzed    
     """
 
     def __init__(self, output_dir):
@@ -122,7 +122,11 @@ class Statistical_Analysis(Analysis):
         """[Seaborn plot] plots dataframe with seaborn
 
         Args:
-            df ([dataframe): dataframe which we want to plot
+            df ([dataframe]): dataframe which we want to plot
+
+        Returns:
+            seaborn plot.
+
         """
         df = df.drop(df.columns[df.var() <= self.threshold], axis=1)
         df.keys()
@@ -135,6 +139,9 @@ class Statistical_Analysis(Analysis):
 
         Args:
             df ([dataframe]): dataframe which we want to compute the correlation from
+
+        Returns:
+            dataframe of sorted correlations (without the time column) and prints results in csv file (in output directory)    
         """
         df = Analysis.remove_low_variance(self, df)
         corr_npop = df.corr()
@@ -151,12 +158,17 @@ class Statistical_Analysis(Analysis):
             by='value', key=abs, ascending=False)
 
         corr_npop_df.to_csv(self.output_dir+'npop_out.csv')
+        return corr_npop_df
 
     def eucl_distance(self, df):
         """[Euclidean Distance] computes euclidean distance of of the three components
 
         Args:
-            df (dataframe): blabla
+            df (dataframe): underlying dataframe from which we want to compute the distances
+
+        Returns:
+            array consisting of the three distances in order of x,y,z. 
+            Further it saves the results in an txt file in the outputdirectory
         """
         #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
@@ -171,6 +183,7 @@ class Statistical_Analysis(Analysis):
         plt.savefig(self.output_dir+'table_plot.pdf')
         plt.show()
         np.savetxt(self.output_dir+'table_out.txt', dist_all)
+        return dist_all
 
 
 class Numerical_Analysis(Analysis):
