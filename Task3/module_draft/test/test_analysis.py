@@ -21,11 +21,11 @@ def test_correlation():
     assert analysis.Statistical_Analysis.correlation(
         analysis.Statistical_Analysis, df).columns.tolist() == ["variable", "value"]
 
-d2 = 
+d2 = np.array([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0],[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0],[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0],[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0],[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0],[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0])
 df2 = pd.DataFrame(data=d2)
 
 def test_eucl_distance():
-    """This tests verifys, that the output of eucl_distance is of the correct type and format
+    """This tests verifys, that the output of eucl_distance is of the correct type and value
     """
     # test for correct types of entries in the list
     assert isinstance(analysis.Statistical_Analysis.eucl_distance(analysis.Statistical_Analysis,
