@@ -191,7 +191,7 @@ class Statistical_Analysis(Analysis):
 
 class Numerical_Analysis(Analysis):
 
-    def fft_with_freq_analysis(self, df, column_name, step_size=0, 
+    def fft_with_freq_analysis(self, df, column_name, step_size=0,
                                type="real"):
         """Calculates the fft and gives the frequencies in an pd.Dataframe.
 
@@ -247,5 +247,5 @@ class Numerical_Analysis(Analysis):
         return pd.DataFrame(list(zip(df[time_label].values, autocorr,
                                      np.abs(autocorr), np.real(autocorr),
                                      np.imag(autocorr))),
-                            columns=["time", "autocorr", "autocorr_abs", 
+                            columns=["time", "autocorr", "autocorr_abs",
                                      "autocorr_real", "autocorr_imag"])

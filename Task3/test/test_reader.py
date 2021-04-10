@@ -15,13 +15,13 @@ def create_temp_dir(tmp_path, sub_dir, fns):
         fn_path = tmp_path / sub_dir + fn
         fn_path.touch()
 
-    return tmp_path / sub_dir
+#     return tmp_path / sub_dir
 
 
-@pytest.mark.reader
-@pytest.mark.parametrize('dir_path, expected',
-                         [
-                             (),
-                         ])
-def test_FileReader(dir_path, expected):
-    pass
+# @pytest.mark.reader
+# @pytest.mark.parametrize('dir_path, expected',
+#                          [
+#                              (),
+#                          ])
+# def test_FileReader(dir_path, expected):
+#     pass
