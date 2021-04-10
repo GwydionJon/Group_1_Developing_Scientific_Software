@@ -7,6 +7,11 @@ import pandas as pd
 
 
 def get_data_frame_fft_input():
+    """This is a setup for the fft test and generates a df with 0s
+
+    Returns:
+        df: one column named "test_set" containing 0s
+    """
     print(pytest)
     np_array = np.ones(50)
     my_label = "test_set"
@@ -15,6 +20,11 @@ def get_data_frame_fft_input():
 
 
 def get_data_frame_autocorr_input():
+    """This is a setup for the autocorr test and generates a df with 0s, 1s and a time series.
+
+    Returns:
+        df: time, ones, zeros
+    """
     np_time_range = np.linspace(0, 10, 50)
     np_zeros = np.zeros((50, 50))
     np_ones = np.ones((50, 50))
@@ -31,6 +41,12 @@ def get_data_frame_autocorr_input():
 
 
 def get_data_frame_autocorr_output():
+    """this generates the wanted output for the autocorr test
+
+    Returns:
+        df: ["time", "autocorr", "autocorr_abs",
+                   "autocorr_real", "autocorr_imag"]
+    """
     np_time_range = np.linspace(0, 10, 50)
     np_zero_autocorr = np.zeros(50, dtype=complex)
     np_zero_all = np.zeros(50)
@@ -64,6 +80,9 @@ def test_fft_with_freq_analysis():
 
 
 def test_autocorrelation():
+    """ This tests wether the results of autocorrelation are df and verifys they are equal to the desired output
+    """
+
     df_ones, df_zeros, time_stamp = get_data_frame_autocorr_input()
     df_zeros_out, df_ones_out = get_data_frame_autocorr_output()
     # tests output type for 1 array
