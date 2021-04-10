@@ -2,4 +2,4 @@
 ignore = E305,E126,F401
 exclude = .git,__pycache__,doc, docs
 max-line-length = 180
-only_warn: 1
+only_warn = 1
