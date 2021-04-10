@@ -134,7 +134,7 @@ class Statistical_Analysis(Analysis):
                        kind="line", data=pd.melt(df, ['time']))
         g.fig.autofmt_xdate()
 
-    def correlation(self, df, writecsv = True):
+    def correlation(self, df, writecsv=True):
         """[Correlation] provides correlation matrix of the dataframe
 
         Args:
@@ -156,7 +156,7 @@ class Statistical_Analysis(Analysis):
         corr_npop_df = corr_npop_df.sort_values(
             by='value', key=abs, ascending=False)
         if writecsv:
-            corr_npop_df.to_csv(self.output_dir+'npop_out.csv')
+            corr_npop_df.to_csv(self.output_dir + 'npop_out.csv')
         return corr_npop_df
 
     def eucl_distance(self, df):
@@ -172,16 +172,16 @@ class Statistical_Analysis(Analysis):
         #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
         table_np = np.nan_to_num(table_np)
-        dist_2_3 = np.linalg.norm(table_np[:, 2]-table_np[:, 3])
-        dist_4_5 = np.linalg.norm(table_np[:, 4]-table_np[:, 5])
-        dist_6_7 = np.linalg.norm(table_np[:, 6]-table_np[:, 7])
+        dist_2_3 = np.linalg.norm(table_np[:, 2] - table_np[:, 3])
+        dist_4_5 = np.linalg.norm(table_np[:, 4] - table_np[:, 5])
+        dist_6_7 = np.linalg.norm(table_np[:, 6] - table_np[:, 7])
         dist_all = [dist_2_3, dist_4_5, dist_6_7]
         dist_all
         plt.figure()
         plt.scatter([1, 2, 3], dist_all)
-        plt.savefig(self.output_dir+'table_plot.pdf')
+        plt.savefig(self.output_dir + 'table_plot.pdf')
         plt.show()
-        np.savetxt(self.output_dir+'table_out.txt', dist_all)
+        np.savetxt(self.output_dir + 'table_out.txt', dist_all)
         return dist_all
 
 
@@ -206,7 +206,7 @@ class Numerical_Analysis(Analysis):
             pd.Dataframe: The columns are freq and intensity
         """
         if(step_size == 0):
-            step_size = df.iloc[1, 0]-df.iloc[0, 0]
+            step_size = df.iloc[1, 0] - df.iloc[0, 0]
 
         print(step_size)
         if(type == "real"):
