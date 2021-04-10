@@ -31,5 +31,4 @@ def test_eucl_distance():
     assert isinstance(analysis.Statistical_Analysis.eucl_distance(analysis.Statistical_Analysis,
                                                                          df2), list)
 
-    assert type(analysis.Statistical_Analysis.eucl_distance(
-        analysis.Statistical_Analysis, df)[1] == double
+    assert type(analysis.Statistical_Analysis.eucl_distance(analysis.Statistical_Analysis, df)[1]) == numpy.float64
