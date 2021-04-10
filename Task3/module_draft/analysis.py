@@ -46,10 +46,10 @@ class Analysis:
 
             title ([string]): [title of the plot and the filename]
 
-            xlabel (str, optional): Custom label for the x-axis, 
+            xlabel (str, optional): Custom label for the x-axis,
             if no label is given the column name will be used. Defaults to "".
 
-            ylabel (str, optional): Custom label for the y-axis, 
+            ylabel (str, optional): Custom label for the y-axis,
             if no label is given the column name will be used. Defaults to "".
 
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
@@ -102,9 +102,9 @@ class Analysis:
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
 
-        if(save_graph == True):
+        if save_graph:
             fig.savefig(self.output_dir + title + ".pdf")
-        if(show_graph == True):
+        if show_graph:
             plt.show()
 
 
@@ -112,7 +112,7 @@ class Statistical_Analysis(Analysis):
     """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
 
     Args:
-        Analysis ([dataframe]): dataframe to be analyzed    
+        Analysis ([dataframe]): dataframe to be analyzed
     """
 
     def __init__(self, output_dir):
@@ -141,7 +141,7 @@ class Statistical_Analysis(Analysis):
             df ([dataframe]): dataframe which we want to compute the correlation from
 
         Returns:
-            dataframe of sorted correlations (without the time column) and prints results in csv file (in output directory)    
+            dataframe of sorted correlations (without the time column) and prints results in csv file (in output directory)
         """
         df = Analysis.remove_low_variance(self, df)
         corr_npop = df.corr()
@@ -166,10 +166,10 @@ class Statistical_Analysis(Analysis):
             df (dataframe): underlying dataframe from which we want to compute the distances
 
         Returns:
-            numpy array consisting of the three distances in order of x,y,z. 
+            numpy array consisting of the three distances in order of x,y,z.
             Further it saves the results in an txt file in the outputdirectory
         """
-        #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
+        # table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
         table_np = np.nan_to_num(table_np)
         dist_2_3 = np.linalg.norm(table_np[:, 2] - table_np[:, 3])
