@@ -134,7 +134,7 @@ class Statistical_Analysis(Analysis):
                        kind="line", data=pd.melt(df, ['time']))
         g.fig.autofmt_xdate()
 
-    def correlation(self, df):
+    def correlation(self, df, writecsv = True):
         """[Correlation] provides correlation matrix of the dataframe
 
         Args:
@@ -155,8 +155,8 @@ class Statistical_Analysis(Analysis):
         corr_npop_df = corr_npop_df[corr_npop_df['value'] != 0]
         corr_npop_df = corr_npop_df.sort_values(
             by='value', key=abs, ascending=False)
-
-        corr_npop_df.to_csv(self.output_dir+'npop_out.csv')
+        if writecsv:
+            corr_npop_df.to_csv(self.output_dir+'npop_out.csv')
         return corr_npop_df
 
     def eucl_distance(self, df):
