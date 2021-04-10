@@ -1,9 +1,9 @@
 import pytest
 # import os
-import analysis
 # import reader
 import numpy as np
 import pandas as pd
+from module_draft import analysis
 
 
 def get_data_frame_fft_input():
