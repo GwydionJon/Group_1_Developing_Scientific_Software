@@ -5,3 +5,4 @@ matplotlib
 pytest
 sphinx
 recommonmark
+flake8
