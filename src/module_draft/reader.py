@@ -106,3 +106,11 @@ class FileReader:
             self.df_dict[fn] = df
 
         return self.df_dict
+
+
+
+
+
+
+
+        
