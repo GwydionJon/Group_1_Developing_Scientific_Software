@@ -12,7 +12,6 @@ class Analysis:
     """[analysis] parent class for the analysis with variance filter and plot function
 
     """
-
     def __init__(self, output_dir):
         """Initilizes the class
 
@@ -33,8 +32,18 @@ class Analysis:
 
         return df
 
-    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
-                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10], crop_edge=0):
+    def plot_and_save(self,
+                      df,
+                      x_axis,
+                      y_axis,
+                      title,
+                      xlabel="",
+                      ylabel="",
+                      nr_of_subplots=1,
+                      save_graph=True,
+                      show_graph=True,
+                      size=[15, 10],
+                      crop_edge=0):
         """plots and saves the given data
 
         Args:
@@ -64,7 +73,7 @@ class Analysis:
 
         """
 
-        if(type(y_axis) != list):
+        if (type(y_axis) != list):
             y_axis_list = [y_axis]
         else:
             nr_of_subplots = len(y_axis)
@@ -76,27 +85,33 @@ class Analysis:
         #     ylabel_list = ylabel
 
         # use column names as labels if no other label is given
-        if(xlabel == ""):
+        if (xlabel == ""):
             xlabel = x_axis
-        if(ylabel == ""):
+        if (ylabel == ""):
             ylabel = y_axis
 
-        if(type(ylabel) != list):
+        if (type(ylabel) != list):
             ylabel_list = [ylabel]
         else:
             ylabel_list = ylabel
 
-        fig, axes = plt.subplots(
-            nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
+        fig, axes = plt.subplots(nr_of_subplots,
+                                 1,
+                                 figsize=(size[0], size[1]),
+                                 sharex=True,
+                                 squeeze=False)
 
         for i in range(nr_of_subplots):
-            if(crop_edge == 0):
-                axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
-                                                      ].values, label=ylabel_list[i])
+            if (crop_edge == 0) is True:
+                axes[i, 0].plot(df[x_axis].values,
+                                df[y_axis_list[i]].values,
+                                label=ylabel_list[i])
 
             else:
-                axes[i, 0].plot(df[x_axis].values[crop_edge:-crop_edge], df[y_axis_list[i]
-                                                                            ].values[crop_edge:-crop_edge], label=ylabel_list[i])
+                axes[i,
+                     0].plot(df[x_axis].values[crop_edge:-crop_edge],
+                             df[y_axis_list[i]].values[crop_edge:-crop_edge],
+                             label=ylabel_list[i])
             axes[i, 0].set_ylabel(ylabel_list[i])
             axes[i, 0].legend()
 
@@ -113,8 +128,8 @@ class Statistical_Analysis(Analysis):
 
     Args:
         Analysis ([dataframe]): dataframe to be analyzed
-    """
 
+    """
     def __init__(self, output_dir):
         Analysis.__init__(self, output_dir)
 
@@ -130,8 +145,11 @@ class Statistical_Analysis(Analysis):
         """
         df = df.drop(df.columns[df.var() <= self.threshold], axis=1)
         df.keys()
-        g = sn.relplot(x="time", y="value", hue="variable",
-                       kind="line", data=pd.melt(df, ['time']))
+        g = sn.relplot(x="time",
+                       y="value",
+                       hue="variable",
+                       kind="line",
+                       data=pd.melt(df, ['time']))
         g.fig.autofmt_xdate()
 
     def correlation(self, df, writecsv=True):
@@ -159,6 +177,7 @@ class Statistical_Analysis(Analysis):
             corr_npop_df.to_csv(self.output_dir + 'npop_out.csv')
         return corr_npop_df
 
+
     def eucl_distance(self, df):
         """[Euclidean Distance] computes euclidean distance of of the three components
 
@@ -170,6 +189,7 @@ class Statistical_Analysis(Analysis):
             Further it saves the results in an txt file in the outputdirectory
         """
         # table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
+
         table_np = df.values
         table_np = np.nan_to_num(table_np)
         dist_2_3 = np.linalg.norm(table_np[:, 2] - table_np[:, 3])
@@ -185,9 +205,13 @@ class Statistical_Analysis(Analysis):
         return dist_all
 
 
-class Numerical_Analysis(Analysis):
 
-    def fft_with_freq_analysis(self, df, column_name, step_size=0, type="real"):
+class Numerical_Analysis(Analysis):
+    def fft_with_freq_analysis(self,
+                               df,
+                               column_name,
+                               step_size=0,
+                               type="real"):
         """Calculates the fft and gives the frequencies in an pd.Dataframe.
 
         Args:
@@ -205,18 +229,19 @@ class Numerical_Analysis(Analysis):
         Returns:
             pd.Dataframe: The columns are freq and intensity
         """
-        if(step_size == 0):
+        if step_size == 0:
+
             step_size = df.iloc[1, 0] - df.iloc[0, 0]
 
-        print(step_size)
-        if(type == "real"):
+        if (type == "real"):
             rfft = np.abs(np.fft.rfft(df[column_name].values))
 
-        if(type == "complex"):
+        if (type == "complex"):
             rfft = np.fft.fft(df[column_name].values)
 
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
+        return pd.DataFrame(list(zip(rfft_freq, rfft)),
+                            columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
         """Calculates the autocorrolation function of a given complex dataframe that includes a time axis.
@@ -227,12 +252,17 @@ class Numerical_Analysis(Analysis):
             time_label (string): Label name of the time column.
 
         Returns:
-            pd.Dataframe: The columns are: time, autocorr, autocorr_abs, autocorr_real, autocorr_imag, where "autocorr" is the complete complex number and the others are the respective part of it.
+            pd.Dataframe: The columns are: time, autocorr, autocorr_abs, autocorr_real, autocorr_imag,
+            where "autocorr" is the complete complex number and the others are the respective part of it.
         """
         imag_array = df.drop(time_label, axis=1).values
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame(list(zip(df[time_label].values, autocorr,
-                                     np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
-                            columns=["time", "autocorr", "autocorr_abs", "autocorr_real", "autocorr_imag"])
+        return pd.DataFrame(list(
+            zip(df[time_label].values, autocorr, np.abs(autocorr),
+                np.real(autocorr), np.imag(autocorr))),
+                            columns=[
+                                "time", "autocorr", "autocorr_abs",
+                                "autocorr_real", "autocorr_imag"
+                            ])
