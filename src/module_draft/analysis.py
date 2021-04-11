@@ -212,7 +212,7 @@ class Statistical_Analysis(Analysis):
         plt.savefig(self.output_dir + 'table_plot.pdf')
         plt.show()
         np.savetxt(self.output_dir + 'table_out.txt', dist_all)
-
+        return dist_all
 
 class Numerical_Analysis(Analysis):
     def fft_with_freq_analysis(self,
