@@ -153,3 +153,5 @@ Output/**/*.png
 #make.bat
 #Makefile
 _build/
+tmp_pathtable_out.txt
+tmp_pathtable_plot.pdf

@@ -9,7 +9,6 @@ from user_input import user_input
 import analysis
 
 
-
 def main():
     """Main function for commandline call
     """
@@ -67,7 +66,6 @@ def main():
                                                     "intensitys_squared"],
                           "nstate_autocorr_fft_analysis", xlabel="Freq",
                           show_graph=True, crop_edge=3)
-
 
 
 if __name__ == "__main__":
