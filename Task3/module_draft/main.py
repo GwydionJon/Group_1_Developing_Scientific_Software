@@ -2,38 +2,12 @@
 # Date: 19.03.21
 # Package: DSS Analysis Package
 
-# import sys #unused
-import os
-import argparse
-from reader import FileReader
-import analysis
+import sys
 import numpy as np
+import reader
+from user_input import user_input
+import analysis
 
-
-def user_input(sys_argv):
-    """Function to parse command line arguments from user.
-
-    Args:
-        sys_argv (list): command line arguments as saved in sys.argv
-
-    Returns:
-        ArgumentParser: Object containing user arguments
-    """
-    parser = argparse.ArgumentParser()
-
-    # positional command line arguments
-    parser.add_argument("path",
-                        help="path to input directory or file",
-                        type=str)
-
-    # optional command line arguments
-    parser.add_argument("-o",
-                        "--output",
-                        help="where to save output files",
-                        type=str,
-                        default=os.getcwd())
-
-    return parser.parse_args(sys_argv)
 
 
 def main():
@@ -48,10 +22,9 @@ def main():
     # args = user_input(['Input/Task1/', '-o',
     #                    'Output/Task2/'])
 
-
     # read files
-    reader = FileReader(args.path)
-    input_df = reader.read()
+    reader_obj = reader.FileReader(args.path)
+    input_df = reader_obj.read()
 
     # perform statistical analysis
     stat_ana = analysis.Statistical_Analysis(args.output)
@@ -76,11 +49,11 @@ def main():
                           show_graph=False)
 
     df_autocorr = num_ana.autocorrelation(input_df["nstate_i.t"], "time")
-    num_ana.plot_and_save(df_autocorr,
-                          "time",
-                          ["autocorr_abs", "autocorr_real", "autocorr_imag"],
-                          "nstate_autocorr_analysis",
-                          xlabel="time",
+
+    num_ana.plot_and_save(df_autocorr, "time", ["autocorr_abs",
+                                                "autocorr_real",
+                                                "autocorr_imag"],
+                          "nstate_autocorr_analysis", xlabel="time",
                           show_graph=False)
 
     df_autocorr_fft = num_ana.fft_with_freq_analysis(df_autocorr,
@@ -90,12 +63,11 @@ def main():
     # adding abs**2 to the dataframe
     df_autocorr_fft["intensitys_squared"] = np.abs(
         df_autocorr_fft["intensitys"].values)**2
-    num_ana.plot_and_save(df_autocorr_fft,
-                          "freq", ["intensitys", "intensitys_squared"],
-                          "nstate_autocorr_fft_analysis",
-                          xlabel="Freq",
-                          show_graph=True,
-                          crop_edge=3)
+    num_ana.plot_and_save(df_autocorr_fft, "freq", ["intensitys",
+                                                    "intensitys_squared"],
+                          "nstate_autocorr_fft_analysis", xlabel="Freq",
+                          show_graph=True, crop_edge=3)
+
 
 
 if __name__ == "__main__":

@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 
 
 class Analysis:
-    """[analysis] parent class for the analysis with variance filter and plot function
+    """[analysis] parent class for the analysis with variance filter and plot
+    function
 
     """
     def __init__(self, output_dir):
@@ -31,6 +32,7 @@ class Analysis:
         df = df.drop(df.columns[df.var() <= self.threshold], axis=1)
 
         return df
+
 
     def plot_and_save(self,
                       df,
@@ -63,13 +65,17 @@ class Analysis:
 
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
 
-            save_graph (bool, optional): whether or not the graph should be saved as a pdf. Defaults to true.
+            save_graph (bool, optional): whether or not the graph should be
+            saved as a pdf. Defaults to true.
 
-            show_graph (bool, optional): whether or not the graph should be shown in a window. Defaults to true.
+            show_graph (bool, optional): whether or not the graph should be
+            shown in a window. Defaults to true.
 
-            size (list(int), optional): total size of the plot. Defaults to [15,10].
+            size (list(int), optional): total size of the plot. Defaults to
+            [15,10].
 
-            crop_edge (int, optional): nr of cropped points at the edge of the graph. Defaults to 0.
+            crop_edge (int, optional): nr of cropped points at the edge of the
+            graph. Defaults to 0.
 
         """
 
@@ -95,6 +101,7 @@ class Analysis:
         else:
             ylabel_list = ylabel
 
+
         fig, axes = plt.subplots(nr_of_subplots,
                                  1,
                                  figsize=(size[0], size[1]),
@@ -108,6 +115,7 @@ class Analysis:
                                 label=ylabel_list[i])
 
             else:
+
                 axes[i,
                      0].plot(df[x_axis].values[crop_edge:-crop_edge],
                              df[y_axis_list[i]].values[crop_edge:-crop_edge],
@@ -124,9 +132,11 @@ class Analysis:
 
 
 class Statistical_Analysis(Analysis):
-    """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
+    """[Statistical Analysis] child class for statistical analysis, provides
+    seabornplot, correlation matrix and euclidean distance
 
     Args:
+
         Analysis ([dataframe]): dataframe to be analyzed
 
     """
@@ -167,6 +177,7 @@ class Statistical_Analysis(Analysis):
         corr_npop_np = corr_npop.to_numpy()
 
         corr_npop_np = np.triu(corr_npop_np, k=1)
+
         corr_npop_df = pd.DataFrame(data=corr_npop_np, index=corr_npop.keys(), columns=corr_npop.keys())
         corr_npop_df = corr_npop_df.drop('time', axis=1)
         corr_npop_df = corr_npop_df.melt(ignore_index=False)
@@ -179,7 +190,8 @@ class Statistical_Analysis(Analysis):
 
 
     def eucl_distance(self, df):
-        """[Euclidean Distance] computes euclidean distance of of the three components
+        """[Euclidean Distance] computes euclidean distance of of the three
+        components
 
         Args:
             df (dataframe): underlying dataframe from which we want to compute the distances
@@ -189,7 +201,6 @@ class Statistical_Analysis(Analysis):
             Further it saves the results in an txt file in the outputdirectory
         """
         # table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
-
         table_np = df.values
         table_np = np.nan_to_num(table_np)
         dist_2_3 = np.linalg.norm(table_np[:, 2] - table_np[:, 3])
@@ -202,8 +213,6 @@ class Statistical_Analysis(Analysis):
         plt.savefig(self.output_dir + 'table_plot.pdf')
         plt.show()
         np.savetxt(self.output_dir + 'table_out.txt', dist_all)
-        return dist_all
-
 
 
 class Numerical_Analysis(Analysis):
@@ -220,15 +229,18 @@ class Numerical_Analysis(Analysis):
             column_name (string): the column name for the fft.
 
             step_size (float): stepsize for the freq analysis.
-            Will use differenz beween first two steps if to inout is given, default =0.
+            Will use differenz beween first two steps if to inout is given,
+            default =0.
 
-            type (string): choice between "real" and "complex", this will determine the type of fft,
+            type (string): choice between "real" and "complex", this will
+            determine the type of fft,
             default = "real".
 
 
         Returns:
             pd.Dataframe: The columns are freq and intensity
         """
+
         if step_size == 0:
 
             step_size = df.iloc[1, 0] - df.iloc[0, 0]
@@ -244,7 +256,8 @@ class Numerical_Analysis(Analysis):
                             columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
-        """Calculates the autocorrolation function of a given complex dataframe that includes a time axis.
+        """Calculates the autocorrolation function of a given complex
+        dataframe that includes a time axis.
 
         Args:
             df (pd.Dataframe): The Dataframe which includes the relevant data.
@@ -259,6 +272,7 @@ class Numerical_Analysis(Analysis):
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
+
         return pd.DataFrame(list(
             zip(df[time_label].values, autocorr, np.abs(autocorr),
                 np.real(autocorr), np.imag(autocorr))),
