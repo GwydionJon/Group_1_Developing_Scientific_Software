@@ -55,9 +55,9 @@ class FileReader:
 
         # creates new np.array with complex numbers
         imag_np = np.zeros(
-            (temp_np.shape[0], int(temp_np.shape[1]/2)), dtype=complex)
+            (temp_np.shape[0], int(temp_np.shape[1] / 2)), dtype=complex)
         for i in range(imag_np.shape[1]):
-            imag_np[:, i] = temp_np[:, 2*i]+1j*temp_np[:, 2*i+1]
+            imag_np[:, i] = temp_np[:, 2 * i] + 1j * temp_np[:, 2 * i + 1]
 
         # creates DataFrame from complex numpy array and adds
         # the time column again

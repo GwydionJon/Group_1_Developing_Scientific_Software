@@ -36,13 +36,13 @@ def main():
     """Main function for commandline call
     """
     # end user version for user_input
-    # args = user_input(sys.argv[1:])
+    args = user_input(sys.argv[1:])
 
     # add your own args = user_input() for testing and debugging so that you
     # don't have to call the script with full command line input
 
-    args = user_input(['Input/Task1/', '-o',
-                       'Output/Task2/'])
+    # args = user_input(['Input/Task1/', '-o',
+    #                    'Output/Task2/'])
 
     # read files
     reader = FileReader(args.path)

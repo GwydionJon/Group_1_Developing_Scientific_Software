@@ -42,10 +42,10 @@ class Analysis:
 
             title ([string]): [title of the plot and the filename]
 
-            xlabel (str, optional): Custom label for the x-axis, 
+            xlabel (str, optional): Custom label for the x-axis,
             if no label is given the column name will be used. Defaults to "".
 
-            ylabel (str, optional): Custom label for the y-axis, 
+            ylabel (str, optional): Custom label for the y-axis,
             if no label is given the column name will be used. Defaults to "".
 
             nr_of_subplots (int, optional): [nr of subplots]. Defaults to 1.
@@ -98,9 +98,9 @@ class Analysis:
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
 
-        if(save_graph == True):
+        if save_graph:
             fig.savefig(self.output_dir + title + ".pdf")
-        if(show_graph == True):
+        if show_graph:
             plt.show()
 
 
@@ -108,7 +108,7 @@ class Statistical_Analysis(Analysis):
     """[Statistical Analysis] child class for statistical analysis, provides seabornplot, correlation matrix and euclidean distance
 
     Args:
-        Analysis ([dataframe]): dataframe to be analysed    
+        Analysis ([dataframe]): dataframe to be analysed
     """
 
     def __init__(self, output_dir):
@@ -154,7 +154,7 @@ class Statistical_Analysis(Analysis):
         Args:
             df ([dataframe]): blabla
         """
-        #table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
+        # table_np = np.loadtxt(filenames_dict["table_dat"], skiprows=1)
         table_np = df.values
         table_np = np.nan_to_num(table_np)
         dist_2_3 = np.linalg.norm(table_np[:, 2]-table_np[:, 3])
@@ -179,7 +179,7 @@ class Numerical_Analysis(Analysis):
 
             column_name ([string]): [the column name for the fft]
 
-            step_size ([float]): stepsize for the freq analysis. 
+            step_size ([float]): stepsize for the freq analysis.
             Will use differenz beween first two steps if to inout is given, default =0
 
             type (string): choice between "real" and "complex", this will determine the type of fft,
