@@ -213,7 +213,7 @@ class Numerical_Analysis(Analysis):
             pd.Dataframe: The columns are freq and intensity
         """
         if(step_size == 0):
-            step_size = df.iloc[1, 0]-df.iloc[0, 0]
+            step_size = df.iloc[1, 0] - df.iloc[0, 0]
 
         print(step_size)
         if(type == "real"):
