@@ -53,6 +53,7 @@ class FileReader:
         temp_np = temp_np[:, 1:]
 
         # creates new np.array with complex numbers
+
         imag_np = np.zeros((temp_np.shape[0], int(temp_np.shape[1] / 2)),
                            dtype=complex)
         for i in range(imag_np.shape[1]):

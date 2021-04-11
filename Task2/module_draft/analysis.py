@@ -113,9 +113,9 @@ class Analysis:
 
         axes[-1, 0].set_xlabel(xlabel, fontsize=18)
 
-        if (save_graph):
+        if(save_graph):
             fig.savefig(self.output_dir + title + ".pdf")
-        if (show_graph):
+        if(show_graph):
             plt.show()
 
 
@@ -213,7 +213,8 @@ class Numerical_Analysis(Analysis):
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
-        if (step_size == 0):
+
+        if step_size == 0:
             step_size = df.iloc[1, 0] - df.iloc[0, 0]
 
         print(step_size)
