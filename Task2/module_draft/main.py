@@ -2,6 +2,7 @@
 # Date: 19.03.21
 # Package: DSS Analysis Package
 
+
 import sys
 import os
 import argparse
@@ -42,7 +43,7 @@ def main():
     # don't have to call the script with full command line input
 
     # args = user_input(['Input/Task1/', '-o',
-    #                    'Output/Task2/'])
+    #                  'Output/Task2/']
 
     # read files
     reader = FileReader(args.path)

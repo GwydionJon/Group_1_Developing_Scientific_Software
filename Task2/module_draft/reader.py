@@ -11,7 +11,6 @@ class FileReader:
     """Class for reading the input files and returning them as pandas
     DataFrames.
     """
-
     def __init__(self, dir_path):
         """__init__ Method of FileReader class detects all files in folder
         and safes their paths and filenames as dict or does the same for just a
@@ -54,8 +53,9 @@ class FileReader:
         temp_np = temp_np[:, 1:]
 
         # creates new np.array with complex numbers
-        imag_np = np.zeros(
-            (temp_np.shape[0], int(temp_np.shape[1] / 2)), dtype=complex)
+        imag_np = np.zeros((temp_np.shape[0], int(temp_np.shape[1] / 2)),
+                           dtype=complex)
+    
         for i in range(imag_np.shape[1]):
             imag_np[:, i] = temp_np[:, 2 * i] + 1j * temp_np[:, 2 * i + 1]
 

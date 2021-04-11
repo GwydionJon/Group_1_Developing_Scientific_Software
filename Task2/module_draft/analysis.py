@@ -8,7 +8,6 @@ class Analysis:
     """[analysis] parent class for the analysis with variance filter and plot function
 
     """
-
     def __init__(self, output_dir):
         """Initilizes the class
 
@@ -29,8 +28,18 @@ class Analysis:
 
         return df
 
-    def plot_and_save(self, df, x_axis, y_axis, title, xlabel="", ylabel="",
-                      nr_of_subplots=1, save_graph=True, show_graph=True, size=[15, 10], crop_edge=0):
+    def plot_and_save(self,
+                      df,
+                      x_axis,
+                      y_axis,
+                      title,
+                      xlabel="",
+                      ylabel="",
+                      nr_of_subplots=1,
+                      save_graph=True,
+                      show_graph=True,
+                      size=[15, 10],
+                      crop_edge=0):
         """plots and saves the given data
 
         Args:
@@ -60,7 +69,7 @@ class Analysis:
 
         """
 
-        if(type(y_axis) != list):
+        if (type(y_axis) != list):
             y_axis_list = [y_axis]
         else:
             nr_of_subplots = len(y_axis)
@@ -72,27 +81,33 @@ class Analysis:
         #     ylabel_list = ylabel
 
         # use column names as labels if no other label is given
-        if(xlabel == ""):
+        if (xlabel == ""):
             xlabel = x_axis
-        if(ylabel == ""):
+        if (ylabel == ""):
             ylabel = y_axis
 
-        if(type(ylabel) != list):
+        if (type(ylabel) != list):
             ylabel_list = [ylabel]
         else:
             ylabel_list = ylabel
 
-        fig, axes = plt.subplots(
-            nr_of_subplots, 1, figsize=(size[0], size[1]), sharex=True, squeeze=False)
+        fig, axes = plt.subplots(nr_of_subplots,
+                                 1,
+                                 figsize=(size[0], size[1]),
+                                 sharex=True,
+                                 squeeze=False)
 
         for i in range(nr_of_subplots):
-            if(crop_edge == 0):
-                axes[i, 0].plot(df[x_axis].values, df[y_axis_list[i]
-                                                      ].values, label=ylabel_list[i])
+            if (crop_edge == 0):
+                axes[i, 0].plot(df[x_axis].values,
+                                df[y_axis_list[i]].values,
+                                label=ylabel_list[i])
 
             else:
-                axes[i, 0].plot(df[x_axis].values[crop_edge:-crop_edge], df[y_axis_list[i]
-                                                                            ].values[crop_edge:-crop_edge], label=ylabel_list[i])
+                axes[i,
+                     0].plot(df[x_axis].values[crop_edge:-crop_edge],
+                             df[y_axis_list[i]].values[crop_edge:-crop_edge],
+                             label=ylabel_list[i])
             axes[i, 0].set_ylabel(ylabel_list[i])
             axes[i, 0].legend()
 
@@ -110,7 +125,6 @@ class Statistical_Analysis(Analysis):
     Args:
         Analysis ([dataframe]): dataframe to be analysed
     """
-
     def __init__(self, output_dir):
         Analysis.__init__(self, output_dir)
 
@@ -122,8 +136,11 @@ class Statistical_Analysis(Analysis):
         """
         df = df.drop(df.columns[df.var() <= self.threshold], axis=1)
         df.keys()
-        g = sn.relplot(x="time", y="value", hue="variable",
-                       kind="line", data=pd.melt(df, ['time']))
+        g = sn.relplot(x="time",
+                       y="value",
+                       hue="variable",
+                       kind="line",
+                       data=pd.melt(df, ['time']))
         g.fig.autofmt_xdate()
 
     def correlation(self, df):
@@ -138,13 +155,16 @@ class Statistical_Analysis(Analysis):
         corr_npop_np = corr_npop.to_numpy()
 
         corr_npop_np = np.triu(corr_npop_np, k=1)
-        corr_npop_df = pd.DataFrame(data=corr_npop_np, index=['time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'], columns=[
-                                    'time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'])
+        corr_npop_df = pd.DataFrame(
+            data=corr_npop_np,
+            index=['time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'],
+            columns=['time', 'MO3', 'MO4', 'MO6', 'MO11', 'MO12', 'MO14'])
         corr_npop_df = corr_npop_df.drop('time', axis=1)
         corr_npop_df = corr_npop_df.melt(ignore_index=False)
         corr_npop_df = corr_npop_df[corr_npop_df['value'] != 0]
-        corr_npop_df = corr_npop_df.sort_values(
-            by='value', key=abs, ascending=False)
+        corr_npop_df = corr_npop_df.sort_values(by='value',
+                                                key=abs,
+                                                ascending=False)
 
         corr_npop_df.to_csv(self.output_dir + 'npop_out.csv')
 
@@ -170,8 +190,11 @@ class Statistical_Analysis(Analysis):
 
 
 class Numerical_Analysis(Analysis):
-
-    def fft_with_freq_analysis(self, df, column_name, step_size=0, type="real"):
+    def fft_with_freq_analysis(self,
+                               df,
+                               column_name,
+                               step_size=0,
+                               type="real"):
         """[calculates the fft and gives the frequencies in an pd.Dataframe]
 
         Args:
@@ -190,18 +213,20 @@ class Numerical_Analysis(Analysis):
         Returns:
             [pd.Dataframe]: [with freq and intensity]
         """
-        if(step_size == 0):
+        if step_size == 0:
+
             step_size = df.iloc[1, 0] - df.iloc[0, 0]
 
         print(step_size)
-        if(type == "real"):
+        if (type == "real"):
             rfft = np.abs(np.fft.rfft(df[column_name].values))
 
-        if(type == "complex"):
+        if (type == "complex"):
             rfft = np.fft.fft(df[column_name].values)
 
         rfft_freq = np.sort(np.fft.fftfreq(rfft.size, step_size))
-        return pd.DataFrame(list(zip(rfft_freq, rfft)), columns=["freq", "intensitys"])
+        return pd.DataFrame(list(zip(rfft_freq, rfft)),
+                            columns=["freq", "intensitys"])
 
     def autocorrelation(self, df, time_label):
         """[calculates the autocorrolation function]
@@ -218,6 +243,10 @@ class Numerical_Analysis(Analysis):
         autocorr = np.zeros(len(imag_array), dtype=complex)
         for t in range(len(imag_array)):
             autocorr[t] = np.sum(imag_array[0, :] * imag_array[t, :])
-        return pd.DataFrame(list(zip(df[time_label].values, autocorr,
-                                     np.abs(autocorr), np.real(autocorr), np.imag(autocorr))),
-                            columns=["time", "autocorr", "autocorr_abs", "autocorr_real", "autocorr_imag"])
+        return pd.DataFrame(list(
+            zip(df[time_label].values, autocorr, np.abs(autocorr),
+                np.real(autocorr), np.imag(autocorr))),
+                            columns=[
+                                "time", "autocorr", "autocorr_abs",
+                                "autocorr_real", "autocorr_imag"
+                            ])

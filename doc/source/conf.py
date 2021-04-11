@@ -12,25 +12,25 @@
 #
 import os
 import sys
+sys.path.insert(0, os.path.abspath('../../Task3/module_draft'))
 
-sys.path.insert(0, os.path.abspath('../Task3/module_draft'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Developing Scientific Software Group 1'
-copyright = '2021, Tobias Kaczun, Leonie Kreis, Gwydion Daskalakis'
-author = 'Tobias Kaczun, Leonie Kreis, Gwydion Daskalakis'
+project = 'first_package_draft'
+copyright = '2021, Leonie Kreis, Tobias Kaczun, Gwydion Daskalakis'
+author = 'Leonie Kreis, Tobias Kaczun, Gwydion Daskalakis'
 
 # The full version, including alpha/beta/rc tags
 release = '2021'
+
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-
-extensions = ['sphinx.ext.autodoc', 'recommonmark', 'sphinx.ext.napoleon']
+extensions = ['sphinx.ext.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -38,14 +38,15 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = []
+
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'default'
+html_theme = 'alabaster'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

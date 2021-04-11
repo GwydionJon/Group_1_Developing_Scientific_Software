@@ -11,7 +11,6 @@ class FileReader:
     """Class for reading the input files and returning them as pandas
     DataFrames.
     """
-
     def __init__(self, dir_path):
         """__init__ Method of FileReader class detects all files in folder
         and safes their paths and filenames as dict or does the same for just a
