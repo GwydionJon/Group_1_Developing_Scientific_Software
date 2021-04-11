@@ -37,5 +37,5 @@ jobs:
       run: flake8
     - name: Run pytest
       run: |
-        cd Task3/module_draft
+        cd src
         python -m pytest

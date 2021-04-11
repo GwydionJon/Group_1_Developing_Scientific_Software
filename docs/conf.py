@@ -13,7 +13,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../Task3/module_draft'))
+sys.path.insert(0, os.path.abspath('../src/module_draft'))
 
 # -- Project information -----------------------------------------------------
 

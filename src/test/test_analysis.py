@@ -38,6 +38,7 @@ def test_eucl_distance():
 
     assert type(obj2.eucl_distance(df2)[1]) == np.float64
 
+
 def get_data_frame_fft_input():
     """This is a setup for the fft test and generates a df with 0s
 
